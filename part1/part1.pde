@@ -32,8 +32,8 @@ class My3DPoint{
 }
 
 My2DPoint projectPoint(My3DPoint eye, My3DPoint p){
- double factor = (p.z-eye.z) / eye.z;
- return new My2DPoint((floor)((p.x - eye.x) /factor),(floor)((p.y- eye.y)/factor));
+ double factor = - eye.z / (p.z  - eye.z);
+ return new My2DPoint((float)((p.x - eye.x) /factor),(float)((p.y- eye.y)/factor));
 }
 
 
@@ -80,11 +80,11 @@ this.p = p;
 }
 
 My2DBox projectBox( My3DPoint eye, My3DBox box){
- ArrayList<My2DPoint> listOfPoints=new ArrayList<My2DPoint>();
- for(int i=0; i<box.p.length;i++){
-   listOfPoints.add(projectPoint(eye, box.p[i]));
+ My2DPoint[] box2d = new My2DPoint[8];
+ for(int i=0; i<8;i++){
+   box2d[i] = projectPoint(eye, box.p[i]);
  }
- return new My2DBox(listOfPoints.toArray(new My2DPoint[listOfPoints.size()]));
+ return new My2DBox(box2d);
  }
  
 
