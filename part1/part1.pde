@@ -87,4 +87,30 @@ My2DBox projectBox( My3DPoint eye, My3DBox box){
  return new My2DBox(box2d);
  }
  
+float[] homogeneous3DPoint (My3DPoint p) {
+  float[] result = {p.x, p.y, p.z , 1};
+  return result;
+}
 
+float[] matrixProduct(float[][] a, float[] b) {
+ float m1 = a[0][0] * b[0] + a[1][0] * b[1] + a[2][0] * b[2] + a[3][0] * b[3]; // faisable avec boucle for, mais plus rapide comme ça car grandeur fixe.  
+ float m2 = a[0][1] * b[0] + a[1][1] * b[1] + a[2][1] * b[2] + a[3][1] * b[3];
+ float m3 = a[0][2] * b[0] + a[1][2] * b[1] + a[2][2] * b[2] + a[3][2] * b[3];
+ float m4 = a[0][3] * b[0] + a[1][3] * b[1] + a[2][3] * b[2] + a[3][3]* b[3];
+ return new float[]{m1,m2,m3,m4};
+}
+
+My3DBox transformBox(My3DBox box, float[][] transformMatrix) {
+  My3DPoint[] listOfPoints = box.p;
+  My3DPoint[] newBoxPoints = new My3DPoint[listOfPoints.length];
+  for(int i=0; i<listOfPoints.length ; i++){
+  newBoxPoints[i] = euclidian3DPoint( matrixProduct(transformMatrix, new float[]{box.p[i].x, box.p[i].y, box.p[i].z})); 
+}
+  return new My3DBox(newBoxPoints);
+}
+
+
+My3DPoint euclidian3DPoint (float[] a) {
+My3DPoint result = new My3DPoint(a[0]/a[3], a[1]/a[3], a[2]/a[3]);
+return result;
+}
