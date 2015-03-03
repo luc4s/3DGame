@@ -158,3 +158,29 @@ float[][] translationMatrix(float x, float y, float z){
       {0, 0, 0, 1}}
      );}
 
+void mouseDragged()
+{
+  if (MouseEvent == UP) {
+    // insert transformation here
+  }
+  if (MouseEvent == DOWN) {
+    // insert transformation here
+  }
+}
+
+void keyPressed() {
+  if (key == CODED) {
+    if (keyCode == UP) {
+      // insert transformation here
+    } else if (keyCode == DOWN) {
+      // insert transformation here
+    } else if (keyCode == LEFT) {
+      // insert transformation here
+    } else if (keyCode == RIGHT) {
+     // insert transformation here
+    }
+  } else {
+    // insert transformation here
+  }
+}
+
