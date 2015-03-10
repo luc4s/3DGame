@@ -1,10 +1,7 @@
 float depth = 2000;
 float rotate = 0;
-boolean rotate_en = false;
-float dx = 0;
-float dy = 0;
-float rx = 0, orx = 0;
-float ry = 0, ory = 0;
+float mousex = 0;
+float mousey = 0;
 
 void setup() {
   size (500, 500, P3D);
@@ -20,9 +17,8 @@ void draw() {
   background(200);
   translate(width/2, height/2, 0);
   
-  rotateZ(rx);
-  rotateX(ry);
-  
+  rotateZ(mousex);
+  rotateX(mousey);
   rotateY(rotate);
   pushMatrix();
 
@@ -33,33 +29,10 @@ void draw() {
   
 }
 
-void mousePressed(){
-    dx = mouseX; //-50.25*
-    dy = mouseY;
-    //rx = (mouseX - mousex)/1000; //-50.25*
-    //ry = (mouseY - mousey)/1000;
-    rotate_en = true;
-}
-
-void mouseReleased(){
-    orx = rx;
-    ory = ry;
-    rotate_en = false;
-}
-
 void mouseDragged()
 {
-  if(rotate_en){
-    rx = clamp(orx + (mouseX - dx)/100); //-50.25*
-    ry = clamp(ory + (mouseY - dy)/100);
-  }
-}
-
-final float MAX_ANGLE = PI/3;
-float clamp(float angle){
-    if(angle < -MAX_ANGLE)  return -MAX_ANGLE;
-    if(angle > MAX_ANGLE)   return MAX_ANGLE;
-    return angle;
+  mousex = -50.25*mouseX;
+  mousey = -50.25*mouseY;
 }
 
 void keyPressed() {
