@@ -5,6 +5,7 @@ float dx = 0;
 float dy = 0;
 float rx = 0, orx = 0;
 float ry = 0, ory = 0;
+int sphereRadius = 50;
 
 void setup() {
   size (500, 500, P3D);
@@ -27,8 +28,10 @@ void draw() {
   pushMatrix();
 
   box(1000, 50, 1000);
+  translate(0, -25-sphereRadius, 0); // 25 = moitié de la hauteur de la box
+  sphere(sphereRadius);
+  
   popMatrix();
-    
     
   
 }
@@ -78,3 +81,4 @@ void keyPressed() {
     }
   }
 }
+
