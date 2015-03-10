@@ -8,7 +8,7 @@ class Mover {
   Mover() {
     location = new PVector (width/2, height/2);
     velocity = new PVector (1, 1);
-    gravity = new PVector (0, 2);
+    gravity = new PVector (0, 1);
   }
   
   void update() {
@@ -24,22 +24,22 @@ class Mover {
   
   void checkEdges() {
     if (location.x + ballSize/2 > width || location.x - ballSize/2 < 0) {
-      location = clamp(location);
-      velocity.x *= -1;
+      velocity.x *= -0.9;
     }
     if (location.y + ballSize/2 > height || location.y - ballSize/2 < 0) {
-      location = clamp(location);
-      velocity.y *= -1;
+      velocity.y *= -0.9;
     }
+     location = clamp(location);
   }
   
+  float R = ballSize/2;
   PVector clamp(PVector v){
      
      float x = v.x, y = v.y;
-     if(v.x < 0) x = 0 + ballSize/2;
-     if(v.x > width) x = width - ballSize/2;
-     if(v.y < 0) y = 0 + ballSize/2;
-     if(v.y > height) y = height - ballSize/2; 
+     if(v.x - R < 0) x = R;
+     if(v.x + R> width) x = width - R;
+     if(v.y - R < 0) y = R;
+     if(v.y + R > height) y = height - R; 
      return new PVector(x, y);
   }
 }
