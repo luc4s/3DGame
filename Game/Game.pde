@@ -5,11 +5,10 @@ float mousey = 0;
 boolean rotate_en = false;
 float dx = 0;
 float dy = 0;
-float rx = 0, orx = 0;
-float ry = 0, ory = 0;
+float rx = 0, orx = 0, temprx = 0;
+float ry = 0, ory = 0, tempry = 0;
 int sphereRadius = 50;
 boolean creationMode = false;
-
 
 Mover mover;
 
@@ -30,24 +29,41 @@ void draw() {
   
   if(creationMode){
   return;
+  
+  if (keyCode == SHIFT) {
+    temprx = rx;
+    tempry = ry;
+    while(keyCode == SHIFT)
+    {
+    rotateZ(0);
+    rotateX(-1.5);
+    }
+    rx = temprx;
+    ry = tempry;
+    rotateZ(rx);
+    rotateX(ry);
   }
   
   rotateZ(rx);
   rotateX(ry);
  
   rotateY(rotate);
+  
+  
   pushMatrix();
 
   box(1000, 50, 1000);
   translate(0, -25-sphereRadius, 0); // 25 = moitié de la hauteur de la box
   sphere(sphereRadius);
+
   popMatrix();
   
+  if (keyCode != SHIFT) {
   mover.update();
   mover.checkPlate(ry, rotate, rx);
   mover.checkBorder(ry, rotate, rx);
   mover.display();
-    
+  }
   
 }
 
