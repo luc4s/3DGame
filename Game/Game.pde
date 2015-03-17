@@ -6,6 +6,7 @@ float dy = 0;
 float rx = 0, orx = 0;
 float ry = 0, ory = 0;
 int sphereRadius = 50;
+boolean creationMode = false;
 
 
 Mover mover;
@@ -24,6 +25,10 @@ void draw() {
   ambientLight(102, 102, 102);
   background(200);
   translate(width/2, height/2, 0);
+  
+  if(creationMode){
+  return;
+  }
   
   rotateZ(rx);
   rotateX(ry);
@@ -62,7 +67,7 @@ void mouseReleased(){
 
 void mouseDragged()
 {
-  if(rotate_en){
+  if(!creationMode && rotate_en){
     rx = clamp(orx + (mouseX - dx)/100); //-50.25*
     ry = clamp(ory + (mouseY - dy)/100);
   }
@@ -89,7 +94,17 @@ void keyPressed() {
     else if (keyCode == RIGHT) {
       rotate += 0.1;
     }
+    else if(keyCode == SHIFT){
+        creationMode = true;
+        
+    }
   }
 }
 
-
+void keyReleased(){
+if (key==CODED){
+  if(keyCode == SHIFT){
+   creationMode = false;
+  }
+}
+}
