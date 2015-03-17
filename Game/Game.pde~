@@ -31,11 +31,14 @@ void draw() {
   rotateY(rotate);
   pushMatrix();
 
-
+<<<<<<< HEAD
+  box(2000, 50, 2000);
+=======
   box(1000, 50, 1000);
   translate(0, -25-sphereRadius, 0); // 25 = moitié de la hauteur de la box
   sphere(sphereRadius);
-
+  
+>>>>>>> 866b796e5d4f969fc621f52c0dd15556b3fbe0b6
   popMatrix();
   
   mover.update();
