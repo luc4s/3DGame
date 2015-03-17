@@ -3,9 +3,10 @@ float rotate = 0;
 boolean rotate_en = false;
 float dx = 0;
 float dy = 0;
-float rx = 0, orx = 0, temprx = 0;
-float ry = 0, ory = 0, tempry = 0;
+float rx = 0, orx = 0;
+float ry = 0, ory = 0;
 int sphereRadius = 50;
+boolean creationMode = false;
 
 Mover mover;
 
@@ -24,18 +25,9 @@ void draw() {
   background(200);
   translate(width/2, height/2, 0);
   
-  if (keyCode == SHIFT) {
-    temprx = rx;
-    tempry = ry;
-    while(keyCode == SHIFT)
-    {
-    rotateZ(0);
-    rotateX(-1.5);
-    }
-    rx = temprx;
-    ry = tempry;
-    rotateZ(rx);
-    rotateX(ry);
+
+  if(creationMode){
+  return;
   }
   
   rotateZ(rx);
@@ -77,7 +69,7 @@ void mouseReleased(){
 
 void mouseDragged()
 {
-  if(rotate_en){
+  if(!creationMode && rotate_en){
     rx = clamp(orx + (mouseX - dx)/100); //-50.25*
     ry = clamp(ory + (mouseY - dy)/100);
   }
@@ -104,7 +96,17 @@ void keyPressed() {
     else if (keyCode == RIGHT) {
       rotate += 0.1;
     }
+    else if(keyCode == SHIFT){
+        creationMode = true;
+        
+    }
   }
 }
 
-
+void keyReleased(){
+if (key==CODED){
+  if(keyCode == SHIFT){
+   creationMode = false;
+  }
+}
+}
