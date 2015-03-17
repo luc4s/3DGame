@@ -1,4 +1,4 @@
-float depth = 2000;
+float depth = 4000;
 float rotate = 0;
 boolean rotate_en = false;
 float dx = 0;
@@ -6,9 +6,13 @@ float dy = 0;
 float rx = 0, orx = 0;
 float ry = 0, ory = 0;
 
+
+Mover mover;
+
 void setup() {
   size (500, 500, P3D);
   noStroke();
+  mover = new Mover();
 }
 
 
@@ -26,8 +30,13 @@ void draw() {
   rotateY(rotate);
   pushMatrix();
 
-  box(1000, 50, 1000);
+  box(2000, 50, 2000);
   popMatrix();
+  
+  mover.update();
+  mover.checkPlate(ry, rotate, rx);
+  mover.checkBorder(ry, rotate, rx);
+  mover.display();
     
     
   
