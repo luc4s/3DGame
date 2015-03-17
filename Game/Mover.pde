@@ -5,6 +5,7 @@ class Mover {
   PVector gravityForce;
   float gravityConstant = -2;
   float rebound = 0.75;
+  int carreSize = 500;
   
   
   Mover() {
@@ -32,21 +33,21 @@ class Mover {
   }
   
   void checkBorder(float rx, float ry, float rz) {
-    if (location.x > 1000) {
+    if (location.x > carreSize) {
      velocity.x = -velocity.x*rebound;
-    location.x = 1000;
+    location.x = carreSize;
     } 
-     if (location.x < -1000) {
+     if (location.x < -carreSize) {
      velocity.x = -velocity.x*rebound;
-    location.x = -1000;
+    location.x = -carreSize;
     } 
-    if (location.z > 1000) {
+    if (location.z > carreSize) {
      velocity.z = -velocity.z*rebound;
-    location.z = 1000;
+    location.z = carreSize;
     } 
-    if (location.z < -1000) {
+    if (location.z < -carreSize) {
      velocity.z = -velocity.z*rebound;
-    location.z = -1000;
+    location.z = -carreSize;
     } 
   }
 }
