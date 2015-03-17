@@ -8,6 +8,7 @@ float dy = 0;
 float rx = 0, orx = 0;
 float ry = 0, ory = 0;
 int sphereRadius = 50;
+boolean creationMode = false;
 
 
 Mover mover;
@@ -27,8 +28,13 @@ void draw() {
   background(200);
   translate(width/2, height/2, 0);
   
-  rotateZ(mousex);
-  rotateX(mousey);
+  if(creationMode){
+  return;
+  }
+  
+  rotateZ(rx);
+  rotateX(ry);
+ 
   rotateY(rotate);
   pushMatrix();
 
@@ -49,6 +55,18 @@ void mouseDragged()
 {
   mousex = -50.25*mouseX;
   mousey = -50.25*mouseY;
+  
+  if(!creationMode && rotate_en){
+    rx = clamp(orx + (mouseX - dx)/100); //-50.25*
+    ry = clamp(ory + (mouseY - dy)/100);
+  }
+}
+
+final float MAX_ANGLE = PI/3;
+float clamp(float angle){
+    if(angle < -MAX_ANGLE)  return -MAX_ANGLE;
+    if(angle > MAX_ANGLE)   return MAX_ANGLE;
+    return angle;
 }
 
 void keyPressed() {
@@ -65,7 +83,17 @@ void keyPressed() {
     else if (keyCode == RIGHT) {
       rotate += 0.1;
     }
+    else if(keyCode == SHIFT){
+        creationMode = true;
+        
+    }
   }
 }
 
-
+void keyReleased(){
+if (key==CODED){
+  if(keyCode == SHIFT){
+   creationMode = false;
+  }
+}
+}
