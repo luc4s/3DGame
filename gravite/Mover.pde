@@ -8,12 +8,17 @@ class Mover {
   Mover() {
     location = new PVector (width/2, height/2);
     velocity = new PVector (1, 1);
+	
     gravity = new PVector (0, 1);
   }
   
   void update() {
+  // if (location.y < height - ballSize/2) {
+   //   System.out.println(height);
     velocity.add(gravity);
+    
     location.add(velocity);
+
   }
   void display(){
     stroke(0);
@@ -23,11 +28,29 @@ class Mover {
   }
   
   void checkEdges() {
+<<<<<<< HEAD
     if (location.x + ballSize/2 > width || location.x - ballSize/2 < 0) {
       velocity.x *= -0.9;
     }
     if (location.y + ballSize/2 > height || location.y - ballSize/2 < 0) {
       velocity.y *= -0.9;
+=======
+    if (location.x + ballSize/2 > width) {
+      velocity.x = velocity.x * -1;
+      location.x = width - ballSize/2;
+    }
+    else if (location.x - ballSize/2 < 0) {
+      velocity.x = velocity.x * -1;
+      location.x = ballSize/2;
+    }
+    if (location.y + ballSize/2 > height) {
+      velocity.y = -abs(velocity.y);// * -1;
+      location.y = height - ballSize/2;
+    }
+    else if (location.y - ballSize/2 < 0) {
+      velocity.y = abs(velocity.y);// * -1;
+      location.y = ballSize/2;
+>>>>>>> hello
     }
      location = clamp(location);
   }

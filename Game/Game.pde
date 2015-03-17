@@ -1,4 +1,4 @@
-float depth = 2000;
+float depth = 4000;
 float rotate = 0;
 float mousex = 0;
 float mousey = 0;
@@ -9,9 +9,13 @@ float rx = 0, orx = 0;
 float ry = 0, ory = 0;
 int sphereRadius = 50;
 
+
+Mover mover;
+
 void setup() {
   size (500, 500, P3D);
   noStroke();
+  mover = new Mover();
 }
 
 
@@ -31,8 +35,12 @@ void draw() {
   box(1000, 50, 1000);
   translate(0, -25-sphereRadius, 0); // 25 = moitié de la hauteur de la box
   sphere(sphereRadius);
-  
   popMatrix();
+  
+  mover.update();
+  mover.checkPlate(ry, rotate, rx);
+  mover.checkBorder(ry, rotate, rx);
+  mover.display();
     
   
 }
