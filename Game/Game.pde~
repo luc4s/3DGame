@@ -1,13 +1,10 @@
 float depth = 4000;
 float rotate = 0;
-float mousex = 0;
-float mousey = 0;
 boolean rotate_en = false;
 float dx = 0;
 float dy = 0;
 float rx = 0, orx = 0, temprx = 0;
 float ry = 0, ory = 0, tempry = 0;
-
 int sphereRadius = 50;
 boolean creationMode = false;
 
@@ -27,10 +24,8 @@ void draw() {
   ambientLight(102, 102, 102);
   background(200);
   translate(width/2, height/2, 0);
-
-  if(creationMode){
-  return;
   
+<<<<<<< HEAD
   if (keyCode == SHIFT) {
     temprx = rx;
     tempry = ry;
@@ -43,13 +38,15 @@ void draw() {
     ry = tempry;
     rotateZ(rx);
     rotateX(ry);
-
+=======
   if(creationMode){
   return;
+>>>>>>> 58c2eb4e2e05098a651c999969f5d614a50c8d41
   }
   
   rotateZ(rx);
   rotateX(ry);
+  
   rotateY(rotate);
   
   
@@ -57,8 +54,7 @@ void draw() {
 
 
   box(1000, 50, 1000);
-  translate(0, -25-sphereRadius, 0); // 25 = moitié de la hauteur de la box
-  sphere(sphereRadius);
+
 
   popMatrix();
   
@@ -87,9 +83,6 @@ void mouseReleased(){
 
 void mouseDragged()
 {
-  mousex = -50.25*mouseX;
-  mousey = -50.25*mouseY;
-  
   if(!creationMode && rotate_en){
     rx = clamp(orx + (mouseX - dx)/100); //-50.25*
     ry = clamp(ory + (mouseY - dy)/100);
@@ -123,15 +116,6 @@ void keyPressed() {
     }
   }
 }
-
-void keyReleased(){
-if (key==CODED){
-  if(keyCode == SHIFT){
-   creationMode = false;
-  }
-}
-  }
-
 
 void keyReleased(){
 if (key==CODED){
