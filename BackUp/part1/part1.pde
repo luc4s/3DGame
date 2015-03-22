@@ -1,22 +1,13 @@
 import java.lang.Math;
-import java.util.Arrays;
 
 void setup() {
   size(400, 400, P2D);
 }
-
-float scale = 1;
-
 void draw() {
-  clear();
   My3DPoint eye = new My3DPoint(-100, -100, -5000);
-  My3DPoint origin = new My3DPoint(0, 0, 0);
-  My3DBox input3DBox = new My3DBox(origin, 100, 150, 300);
-  try{
-  My3DBox transforme = transformBox(input3DBox, scaleMatrix(scale, scale, scale));
-  projectBox(eye, transforme).render();
-  } catch (Exception e){
-    System.out.println(e);}
+  My3DPoint origin = new My3DPoint(0, 0, 0); //The first vertex of your cuboid
+  My3DBox input3DBox = new My3DBox(origin, 100,150,300);
+  projectBox(eye, input3DBox).render();
 }
 
 
@@ -169,7 +160,14 @@ float[][] translationMatrix(float x, float y, float z){
 
 void mouseDragged()
 {
-  scale = scale+0.1;
+  /*
+  if (mouse == UP) {
+    // insert transformation here
+  }
+  if (mouse == DOWN) {
+    // insert transformation here
+  }
+  */
 }
 
 void keyPressed() {
@@ -187,3 +185,4 @@ void keyPressed() {
     // insert transformation here
   }
 }
+

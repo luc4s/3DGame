@@ -1,142 +1,146 @@
-float depth = 4000;
-float rotate = 0;
-float mousex = 0;
-float mousey = 0;
-boolean rotate_en = false;
-float dx = 0;
-float dy = 0;
-float rx = 0, orx = 0, temprx = 0;
-float ry = 0, ory = 0, tempry = 0;
+final float MAX_ANGLE   = PI/3;
+final int   WINDOW_SIZE  = 1000,
+            PLATE_THICKNESS  = 50,
+            PLATE_SIZE       = 1000,
+            MIN_MOTION_SPEED = 10;
+            
+int   motionSpeed = 100;
 
-int sphereRadius = 50;
-boolean creationMode = false;
-
+float dx = 0, rx = 0, orx = 0,
+      dy = 0, ry = 0, ory = 0,
+      rotate = 0,
+      depth  = 2000,
+      pplate_ratio = 1;
+      
+boolean creationMode = false,
+        rotate_en    = false;
+ 
+ 
 Mover mover;
-
+ 
 void setup() {
-  size (500, 500, P3D);
+  size (WINDOW_SIZE, WINDOW_SIZE, P3D);
   noStroke();
-  mover = new Mover();
+  mover = new Mover(-PLATE_THICKNESS/2);
 }
-
-
-
+ 
+ 
+ 
 void draw() {
-  camera(width/2, height/2, depth, 250, 250, 0, 0, 1, 0);
-  directionalLight(50, 100, 125, 0, -1, 0);
   ambientLight(102, 102, 102);
+  directionalLight(150, 150, 150, 1, 1, -1);
+  camera(width/2, height/2, depth, width/2, height/2, 0, 0, 1, 0);
   background(200);
-  translate(width/2, height/2, 0);
-
-  if(creationMode){
-  return;
   
-  if (keyCode == SHIFT) {
-    temprx = rx;
-    tempry = ry;
-    while(keyCode == SHIFT)
-    {
-    rotateZ(0);
-    rotateX(-1.5);
-    }
-    rx = temprx;
-    ry = tempry;
-    rotateZ(rx);
-    rotateX(ry);
-
+  pushMatrix();
+  translate(width/2, height/2, 0);
+  
+  fill(255);
+  //If creation mode is enabled, then we show a second plate to click on
   if(creationMode){
-  return;
+    rotateX(-PI/2); //We rotate it, so we can see it from top
+    box(PLATE_SIZE, PLATE_THICKNESS, PLATE_SIZE);
+    
+    mover.display();
+    popMatrix();
+    return;
   }
+  
   
   rotateZ(rx);
   rotateX(ry);
   rotateY(rotate);
+    
+  box(PLATE_SIZE, PLATE_THICKNESS, PLATE_SIZE);
   
   
-  pushMatrix();
-
-
-  box(1000, 50, 1000);
-  translate(0, -25-sphereRadius, 0); // 25 = moitié de la hauteur de la box
-  sphere(sphereRadius);
-
-  popMatrix();
-  
-  if (keyCode != SHIFT) {
   mover.update();
   mover.checkPlate(ry, rotate, rx);
   mover.checkBorder(ry, rotate, rx);
+  mover.checkCylinder();
   mover.display();
-  }
   
+  popMatrix();
+ 
 }
-
+ 
 void mousePressed(){
     dx = mouseX; //-50.25*
     dy = mouseY;
-    //rx = (mouseX - mousex)/1000; //-50.25*
-    //ry = (mouseY - mousey)/1000;
     rotate_en = true;
+    
+    
+    if(creationMode){
+      
+      //We project the cursor position on the plate
+      float ratio = PLATE_SIZE / (screenX(width/2 + PLATE_SIZE/2, height/2 + PLATE_SIZE/2, 0) -
+                                  screenX(width/2 - PLATE_SIZE/2, height/2 - PLATE_SIZE/2, 0));
+                                  
+      int cylX = (int)((mouseX - width/2) * ratio),
+          cylY = (int)((mouseY - height/2) * ratio);
+      
+      //Check if cylinder is on the plate
+      if(!(cylX < -500 - Cylinder.BASE_SIZE || 
+            cylX > 500 + Cylinder.BASE_SIZE || 
+            cylY < -500 - Cylinder.BASE_SIZE || 
+            cylY > 500 + Cylinder.BASE_SIZE))
+        mover.add(new Cylinder(cylX, - (int)Cylinder.HEIGHT - PLATE_THICKNESS/2, cylY));
+    }
+    
 }
-
+ 
 void mouseReleased(){
     orx = rx;
     ory = ry;
     rotate_en = false;
 }
 
+void mouseWheel(MouseEvent event){
+    motionSpeed += event.getCount() * 5;
+    if(motionSpeed < MIN_MOTION_SPEED) //limits the motion speed
+       motionSpeed = MIN_MOTION_SPEED;
+}
 void mouseDragged()
 {
-  mousex = -50.25*mouseX;
-  mousey = -50.25*mouseY;
-  
-  if(!creationMode && rotate_en){
-    rx = clamp(orx + (mouseX - dx)/100); //-50.25*
-    ry = clamp(ory + (mouseY - dy)/100);
+  if(!creationMode && rotate_en){ //we dont want rotation while placing cylinders
+    rx = clamp(orx + (mouseX - dx)/motionSpeed);
+    ry = clamp(ory + (mouseY - dy)/motionSpeed);
   }
 }
 
-final float MAX_ANGLE = PI/3;
 float clamp(float angle){
     if(angle < -MAX_ANGLE)  return -MAX_ANGLE;
     if(angle > MAX_ANGLE)   return MAX_ANGLE;
     return angle;
 }
-
+ 
 void keyPressed() {
   if (key == CODED) {
-    if (keyCode == UP) {
-      depth -= 10;
-    }
-    else if (keyCode == DOWN) {
-      depth += 10;
-    }
-    else if (keyCode == LEFT) {
-      rotate -= 0.1;
-    }
-    else if (keyCode == RIGHT) {
-      rotate += 0.1;
-    }
-    else if(keyCode == SHIFT){
-        creationMode = true;
-        
-    }
+      switch(keyCode){
+         case UP:
+           depth -= 10;
+           break;
+         case DOWN:
+           depth += 10;
+           break;
+         case LEFT:
+           rotate -= 0.07;
+           break;
+         case RIGHT:
+           rotate += 0.07;
+           break;
+         case SHIFT: 
+          rotate_en = false;  //avoid unwanted behaviour (shift while mouse button pressed)
+          creationMode = true;
+      }
   }
 }
-
+ 
 void keyReleased(){
-if (key==CODED){
-  if(keyCode == SHIFT){
-   creationMode = false;
+  if (key==CODED){
+      if(keyCode == SHIFT)
+        creationMode = false;
   }
 }
-  }
 
 
-void keyReleased(){
-if (key==CODED){
-  if(keyCode == SHIFT){
-   creationMode = false;
-  }
-}
-}
