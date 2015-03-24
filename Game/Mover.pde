@@ -68,15 +68,15 @@ class Mover {
       velocity.x = -velocity.x*AMORTISE;
       location.x = 500;
     } 
-    else if (location.x < -500) {
+    if (location.x < -500) {
       velocity.x = -velocity.x*AMORTISE;
       location.x = -500;
     } 
-    else if (location.z > 500) {
+    if (location.z > 500) {
       velocity.z = -velocity.z*AMORTISE;
       location.z = 500;
     } 
-    else if (location.z < -500) {
+    if (location.z < -500) {
       velocity.z = -velocity.z*AMORTISE;
       location.z = -500;
     } 
@@ -111,5 +111,13 @@ class Mover {
       copy.sub(temp);
       velocity.set(copy.x, v.y, copy.y);
       velocity.mult(AMORTISE);
+  }
+  
+  ArrayList<Cylinder> getCylinders(){
+     return cylinders; 
+  }
+  
+  PVector getBallPos(){
+    return location.get();
   }
 }
