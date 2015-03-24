@@ -2,9 +2,12 @@ final float MAX_ANGLE   = PI/3;
 final int   WINDOW_SIZE  = 1000,
             PLATE_THICKNESS  = 50,
             PLATE_SIZE       = 1000,
-            MIN_MOTION_SPEED = 10;
+            MIN_MOTION_SPEED = 10,
+            SCORE_BOARD_X = 10,
+            TEXT_SIZE = 25;
             
 int   motionSpeed = 100;
+
 
 float dx = 0, rx = 0, orx = 0,
       dy = 0, ry = 0, ory = 0,
@@ -17,11 +20,13 @@ boolean creationMode = false,
  
  
 Mover mover;
+PGraphics scoreBoard;
  
 void setup() {
   size (WINDOW_SIZE, WINDOW_SIZE, P3D);
   noStroke();
   mover = new Mover(-PLATE_THICKNESS/2);
+  scoreBoard = createGraphics(200,250,P2D);
 }
  
  
@@ -61,6 +66,9 @@ void draw() {
   mover.display();
   
   popMatrix();
+  
+  drawScoreBoard();
+  image(scoreBoard, SCORE_BOARD_X, 1300);
  
 }
  
@@ -144,3 +152,15 @@ void keyReleased(){
 }
 
 
+void drawScoreBoard(){
+ scoreBoard.beginDraw();
+ scoreBoard.background(0);
+ scoreBoard.textSize(TEXT_SIZE);
+ scoreBoard.text("Score : ", 10, TEXT_SIZE+10);
+ scoreBoard.text(mover.totalScore , 10, 2*TEXT_SIZE+10);
+ scoreBoard.text("Velocity : ", 10, 4*TEXT_SIZE+10);
+ scoreBoard.text(mover.velocity.mag(), 10, 5*TEXT_SIZE+10);
+ scoreBoard.text("Last Score : ", 10, 7*TEXT_SIZE+10);
+ scoreBoard.text(mover.lastScore, 10, 8*TEXT_SIZE+10);
+ scoreBoard.endDraw();
+}

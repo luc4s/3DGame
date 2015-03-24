@@ -4,6 +4,10 @@ class Mover {
                              AMORTISE     = 0.75;
   public final static int    SPHERE_RADIUS  = 30;
   
+  public float lastScore = 0,
+          totalScore =0;
+  
+  
   private PVector location,
                   velocity,
                   gravityForce;
@@ -65,18 +69,26 @@ class Mover {
   
   void checkBorder(float rx, float ry, float rz) {
     if (location.x > 500) {
+      lastScore = -velocity.mag(); 
+      totalScore = totalScore + lastScore;
       velocity.x = -velocity.x*AMORTISE;
       location.x = 500;
     } 
     else if (location.x < -500) {
+      lastScore = -velocity.mag(); 
+      totalScore = totalScore + lastScore;
       velocity.x = -velocity.x*AMORTISE;
       location.x = -500;
     } 
-    else if (location.z > 500) {
+    if (location.z > 500) {
+      lastScore = -velocity.mag(); 
+      totalScore = totalScore + lastScore;
       velocity.z = -velocity.z*AMORTISE;
       location.z = 500;
     } 
     else if (location.z < -500) {
+      lastScore = -velocity.mag(); 
+      totalScore = totalScore + lastScore;
       velocity.z = -velocity.z*AMORTISE;
       location.z = -500;
     } 
@@ -94,6 +106,8 @@ class Mover {
       for(Cylinder c : cylinders){
          if (c.dist(location) < Cylinder.BASE_SIZE + SPHERE_RADIUS){
              //ball is partially inside the cylinder, so we push it out to avoid the ball "stick" to it
+             lastScore = velocity.mag(); 
+             totalScore = totalScore + lastScore;
              location.sub(velocity); 
              reflect(c.getPos(), location, velocity);
          }
