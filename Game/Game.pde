@@ -92,7 +92,7 @@ void mousePressed(){
             cylX > 500 + Cylinder.BASE_SIZE || 
             cylY < -500 - Cylinder.BASE_SIZE || 
             cylY > 500 + Cylinder.BASE_SIZE))
-        mover.add(new Cylinder(cylX, - (int)Cylinder.HEIGHT - PLATE_THICKNESS/2, cylY));
+        mover.add(new Cylinder(cylX, - PLATE_THICKNESS/2, cylY));
     }
     
 }

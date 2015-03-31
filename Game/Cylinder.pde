@@ -1,4 +1,6 @@
 class Cylinder {
+  PShape tree;
+  
     public final static float BASE_SIZE = 50;
     public final static float HEIGHT = 50;
     public final static int RESOLUTION = 40;
@@ -9,6 +11,10 @@ class Cylinder {
     private final PVector position;
      
     public Cylinder( int xx, int yy, int zz){
+      tree = loadShape("simpleTree.obj");
+      tree.translate(xx,yy,zz);
+      tree.rotate(PI);
+      tree.scale(250);
       position = new PVector(xx, yy, zz);
       
       
@@ -58,9 +64,10 @@ class Cylinder {
     }
      
     void display() {
-      shape(openCylinder);
-      shape(couvercle);
-      shape(couvercle2);
+      shape(tree);
+    //  shape(openCylinder);
+    //  shape(couvercle);
+    //  shape(couvercle2);
     }
 }
 
