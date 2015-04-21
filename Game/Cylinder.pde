@@ -11,10 +11,10 @@ class Cylinder {
     private final PVector position;
      
     public Cylinder( int xx, int yy, int zz){
-      tree = loadShape("simpleTree.obj");
+      tree = loadShape("ARBR.obj");
       tree.translate(xx,yy,zz);
       tree.rotate(PI);
-      tree.scale(250);
+      tree.scale(10);
       position = new PVector(xx, yy, zz);
       
       
